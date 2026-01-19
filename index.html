@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html lang="af">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vir My Vrou – ’n Belofte Van Liefde</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <meta name="theme-color" content="#0b0b0b">
+
+  <style>
+    :root{
+      --bg1:#2b1f2e;
+      --bg2:#140f17;
+      --rose:#ffb3c7;
+      --gold:#ffd9a0;
+      --soft:#f7eef2;
+      --glass:rgba(255,255,255,.14);
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial}
+    body{
+      color:var(--soft);
+      background:radial-gradient(1200px 800px at 20% 0%, #4a2c4f 0%, transparent 60%),
+                 radial-gradient(1200px 800px at 80% 100%, #3a1f3f 0%, transparent 60%),
+                 linear-gradient(160deg,var(--bg1),var(--bg2));
+      overflow-x:hidden;
+    }
+    .center{display:grid;place-items:center}
+    .screen{min-height:100vh;padding:24px}
+    .card{
+      max-width:860px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.25);border-radius:28px;box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);padding:28px
+    }
+    h1,h2,h3{margin:.2em 0 .4em}
+    h1{font-size:clamp(28px,4vw,42px)}
+    h2{font-size:clamp(22px,3.2vw,32px)}
+    a{color: red;}
+    p{line-height:1.65;font-size:clamp(16px,2.4vw,18px)}
+    .btn{
+      appearance:none;border:none;border-radius:999px;padding:12px 18px;margin:6px;
+      background:linear-gradient(135deg,var(--rose),var(--gold));color:#2b1f2e;font-weight:700;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);cursor:pointer
+    }
+    .btn.ghost{background:transparent;color:var(--soft);border:1px solid rgba(255,255,255,.35)}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}
+    .btn-link{display: inline-block;background: linear-gradient(135deg, #ff4d6d, #ffd6a5);padding: 10px 16px;border-radius: 999px;color: #3b0a12;font-weight: 700;text-decoration: none;box-shadow: 0 6px 20px rgba(0,0,0,.25);transition: transform .2s, box-shadow .3s;}
+
+.btn-link:hover{transform: translateY(-3px);box-shadow: 0 12px 25px rgba(255,77,109,.5);}
+
+/* Optional: festive sparkle effect on hover */
+.btn:hover, .btn-link:hover {text-shadow: 0 0 6px #fff5f7, 0 0 12px #ff4d6d;}
+    .fade{opacity:0;transform:translateY(10px);transition:.8s ease}
+    .fade.show{opacity:1;transform:none}
+    /* floating hearts */
+    .float{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+    .heart{
+      position:absolute;bottom:-40px;font-size:18px;opacity:.9;animation:rise linear forwards
+    }
+    @keyframes rise{to{transform:translateY(-120vh);opacity:0}}
+    /* photo */
+    .photo{
+      width:100%;max-width:520px;margin:10px auto;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.35);
+      box-shadow:var(--shadow)
+    }
+    .photo img{width:100%;display:block}
+    /* music */
+    .music{
+      position:fixed;right:16px;bottom:16px;background:var(--glass);border:1px solid rgba(255,255,255,.35);
+      border-radius:999px;padding:10px 14px;display:flex;gap:8px;align-items:center;box-shadow:var(--shadow)
+    }
+    .music button{background:none;border:none;color:var(--soft);font-size:16px;cursor:pointer}
+    /* surprise bloom */
+    .bloom{position:fixed;inset:0;pointer-events:none}
+    .petal{
+      position:absolute;width:12px;height:12px;border-radius:50% 50% 50% 0;
+      background:linear-gradient(135deg,var(--rose),var(--gold));opacity:.9;animation:spin 3.5s ease forwards
+    }
+    @keyframes spin{to{transform:translateY(-120vh) rotate(540deg);opacity:0}}
+  </style>
+</head>
+<body>
+
+  <audio id="bgm" src="./music/song.mp3" loop></audio>
+
+  <div class="float" id="float"></div>
+  <div class="bloom" id="bloom"></div>
+
+  <!-- Opening dedication -->
+
+  <section class="screen center">
+    <div class="card fade show center" id="openCard">
+      <h1>Vir my vrou, <span id="herName">My Liefie</span></h1>
+      <p>’n Stil belofte, gemaak met my hele hart.</p>
+      <button class="btn" id="openBtn">Maak oop</button>
+    </div>
+  </section>
+
+  <!-- Main message -->
+
+  <section class="screen">
+    <div class="card fade" id="mainCard">
+      <h2>My Liefie</h2>
+      <p>
+        Dankie dat jy daar was toe dinge swaar was. Dankie dat jy my gedra het — emosioneel,
+        en met oneindige geduld. Sonder jou sou ek nie vandag hier wees nie.
+      </p>
+      <p>
+        Jy het drome opgeoffer sodat <b>ons</b> kan bestaan. Jy het liefgebly toe die lewe hard was.
+        Jy het hoop gebring toe alles stil gevoel het.
+      </p>
+      <p><b>Ek sien jou.. Ek kies jou.. Elke dag!</b></p>
+    </div>
+  </section>
+
+  <!-- Poetic -->
+
+  <section class="screen">
+    <div class="card fade" id="poeticCard">
+      <h2>’n Sagte Woordjie vir jou</h2>
+      <p>
+        Jy is my veilige plekkie wanneer die wêreld hard raak.
+        Jy is die hand wat my regop hou wanneer my krag min is.
+      </p>
+      <p>
+        Selfs deur verlies, deur wagtyd, deur teleurstelling — het jy ons liefde gekies.
+        Jou hart bly sag. Jou liefde bly sterk.
+      </p>
+    </div>
+  </section>
+
+  <!-- Photo -->
+
+  <section class="screen">
+    <div class="card fade center" id="photoCard">
+      <h2>Ons</h2>
+      <div class="photo">
+        <img src="https://e7.pngegg.com/pngimages/144/767/png-clipart-bride-and-groom-hugging-together-wedding-graphy-marriage-couple-bride-wedding-couple-pic-love-flower-arranging-thumbnail.png" alt="Ons foto" />
+      </div>
+      <p>Liefde hoef nie perfek te wees om eg te wees nie.</p>
+    </div>
+  </section>
+
+  <!-- Promise -->
+
+  <section class="screen">
+    <div class="card fade" id="promiseCard">
+      <h2>My Belofte</h2>
+      <p>
+        Ek belowe om jou te kies — in goeie tye en moeilike dae. Om langs jou te loop,
+        nie voor of agter nie. Om saam te bou, saam te droom, saam te rus.
+      </p>
+      <p>
+        Jy is nie vervangbaar nie. Jy is nie onsigbaar nie.
+        <b>Jy is my vrou. My beste vriendin. My tuiste.</b>
+      </p>
+      <div class="row">
+        <button class="btn ghost" id="hereBtn">Ek is hier</button>
+        <button class="btn" id="restart">Lees weer</button>
+      </div>
+      <br>
+      <div class="row" style="margin-top:12px">
+        <a href="final.html" class="btn-link">Spesiaal ❤️</a>
+      </div>
+  </section>
+
+  <!-- Music controls -->
+
+  <div class="music">
+    <button id="play">▶︎</button>
+    <button id="pause">⏸</button>
+    <button id="mute">🔇</button>
+  </div>
+
+  <script>
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+
+    const bgm=document.getElementById('bgm');
+    bgm.volume=.25;
+    document.getElementById('play').onclick=()=>bgm.play().catch(()=>{});
+    document.getElementById('pause').onclick=()=>bgm.pause();
+    document.getElementById('mute').onclick=()=>{bgm.muted=!bgm.muted};
+
+    const fades=[...document.querySelectorAll('.fade')];
+    const io=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('show')),{threshold:.2});
+    fades.forEach(f=>io.observe(f));
+
+    document.getElementById('openBtn').onclick=()=>{
+      bgm.play().catch(()=>{});
+      surprise();
+      window.scrollTo({top:window.innerHeight,behavior:'smooth'});
+    };
+
+    function heart(){
+      const h=document.createElement('div');
+      h.className='heart';h.textContent='❤';
+      h.style.left=Math.random()*100+'%';
+      h.style.animationDuration=(8+Math.random()*6)+'s';
+      document.getElementById('float').appendChild(h);
+      setTimeout(()=>h.remove(),15000);
+    }
+    setInterval(heart,1800);
+
+    function surprise(){
+      const b=document.getElementById('bloom');
+      for(let i=0;i<28;i++){
+        const p=document.createElement('div');
+        p.className='petal';
+        p.style.left=Math.random()*100+'%';
+        p.style.bottom='-20px';
+        p.style.animationDelay=(Math.random()*1.2)+'s';
+        b.appendChild(p);
+        setTimeout(()=>p.remove(),3600);
+      }
+    }
+
+    document.getElementById('hereBtn').onclick=()=>{
+      const m=document.createElement('div');
+      m.textContent='Ek is baie ❤️ vir jou!';
+      m.style.position='fixed';m.style.left='50%';m.style.bottom='120px';
+      m.style.transform='translateX(-50%)';
+      m.style.background='linear-gradient(135deg,var(--rose),var(--gold))';
+      m.style.color='#2b1f2e';m.style.padding='12px 18px';m.style.borderRadius='999px';
+      m.style.boxShadow='var(--shadow)';m.style.opacity='0';
+      document.body.appendChild(m);
+      requestAnimationFrame(()=>{m.style.transition='1.6s ease';m.style.opacity='1'});
+      setTimeout(()=>{m.style.opacity='0';setTimeout(()=>m.remove(),800)},1600);
+    };
+
+    document.getElementById('restart').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+  </script>
+
+</body>
+</html>

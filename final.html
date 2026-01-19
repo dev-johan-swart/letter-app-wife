@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vir My Vrou — Finale Liefde</title>
+<meta name="theme-color" content="#120306">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+:root{
+  --bg1:#3b0a12; --bg2:#120306;
+  --red:#ff4d6d; --rose:#ff9fb3; --gold:#ffd6a5;
+  --soft:#fff5f7; --glass:rgba(255,255,255,.14);
+  --shadow:0 20px 50px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+body{
+  color:var(--soft);
+  background:
+    radial-gradient(1200px 800px at 15% 0%, #7a1c2a 0%, transparent 60%),
+    radial-gradient(1200px 800px at 85% 100%, #5c0f1b 0%, transparent 60%),
+    linear-gradient(160deg,var(--bg1),var(--bg2));
+  overflow-x:hidden;
+}
+.screen{min-height:100vh;padding:24px;display:grid;place-items:center}
+.card{
+  width:min(920px,100%);background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.28);border-radius:30px;box-shadow:var(--shadow);
+  backdrop-filter:blur(10px);padding:30px;display:grid;gap:16px;justify-items:center;text-align:center;
+}
+h1{font-size:clamp(30px,4.5vw,44px);animation:beat 1s infinite alternate;}
+h2{font-size:clamp(22px,3.2vw,32px)}
+p{line-height:1.7;font-size:clamp(16px,2.4vw,18px)}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{
+  border:none;border-radius:999px;padding:12px 18px;font-weight:800;cursor:pointer;
+  background:linear-gradient(135deg,var(--red),var(--gold));color:#3b0a12;box-shadow:0 10px 30px rgba(0,0,0,.35)
+}
+.btn.ghost{background:transparent;color:var(--soft);border:1px solid rgba(255,255,255,.4)}
+.fade{opacity:0;transform:translateY(12px);transition:.9s ease}
+.fade.show{opacity:1;transform:none}
+/* hearts */
+.float{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.heart{position:absolute;bottom:-40px;font-size:18px;opacity:.95;animation:rise linear forwards}
+@keyframes rise{to{transform:translateY(-120vh);opacity:0}}
+/* petals */
+.petals{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.petal{position:absolute;width:14px;height:14px;border-radius:50% 50% 50% 0;background:linear-gradient(135deg,var(--rose),var(--gold));opacity:.9;animation:spin 3.5s ease forwards}
+@keyframes spin{to{transform:translateY(-120vh) rotate(540deg);opacity:0}}
+/* photo */
+.photo{max-width:420px;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.4);box-shadow:var(--shadow)}
+.photo img{width:100%;display:block}
+.photo-album {cursor: pointer;}
+.photo-album.paused {box-shadow:0 0 18px rgba(255, 200, 220, 0.45),0 0 40px rgba(255, 180, 200, 0.25);transition: box-shadow 0.6s ease;}
+/* music */
+.music{position:fixed;right:16px;bottom:16px;background:var(--glass);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:10px 14px;display:flex;gap:8px;box-shadow:var(--shadow)}
+.music button{background:none;border:none;color:var(--soft);font-size:16px;cursor:pointer}
+/* opening glow */
+.glow{position:fixed;inset:0;pointer-events:none;background:radial-gradient(500px 300px at 50% 40%, rgba(255,77,109,.35), transparent 60%);opacity:0;transition:1.4s}
+.glow.on{opacity:1}
+/* heartbeat */
+@keyframes beat{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+.album-card {display: grid;place-items: center;gap: 14px;text-align: center;}
+.photo-album {position: relative;width: 420px;height: 520px;border-radius: 18px;overflow: hidden;}
+.album-photo {position: absolute;inset: 0;width: 100%;height: 100%;object-fit: cover;opacity: 0;transition: opacity 1.2s ease-in-out;}
+.album-photo.active{opacity: 1;}
+@keyframes softGlow {
+  0% {
+    box-shadow:
+      0 0 18px rgba(255, 200, 220, 0.35),
+      0 0 40px rgba(255, 180, 200, 0.20);
+  }
+  100% {
+    box-shadow:
+      0 0 26px rgba(255, 210, 230, 0.55),
+      0 0 55px rgba(255, 190, 210, 0.30);
+  }
+}
+.photo-album.paused {
+  animation: softGlow 2.5s ease-in-out infinite alternate;
+}
+</style>
+</head>
+<body>
+<audio id="bgm" src="./music/song.mp3" loop></audio>
+<div class="float" id="float"></div>
+<div class="petals" id="petals"></div>
+<div class="glow" id="glow"></div>
+
+<!-- Opening -->
+<section class="screen">
+  <div class="card fade show" id="open">
+    <h1 id="name">Vir my pragtige vrou</h1>
+    <p>’n Oop hart. ’n Warm plekkie. Net vir jou.</p>
+    <div class="row"><button class="btn" id="openBtn">Maak oop</button></div>
+  </div>
+</section>
+
+<!-- Message -->
+<section class="screen"><div class="card fade">
+  <h2>My Liefie</h2>
+  <p>Toe niemand anders daar was nie, was <b>jy</b>. Jy het my gedra deur die swaarste tye — met liefde, geduld en lig.</p>
+  <p>Jy het drome opgeoffer sodat ons saam kan staan. Ek sien jou. Ek waardeer jou. Ek kies jou — elke dag.</p>
+</div></section>
+
+<!-- Poetic -->
+<section class="screen"><div class="card fade">
+  <h2>Rus en Vrede</h2>
+  <p>Jy is my anker wanneer die wêreld bewe. Jou liefde is die lig wat bly skyn, selfs wanneer die nag lank voel.</p>
+</div></section>
+
+<!-- Photo Album -->
+<section class="screen">
+  <div class="card album-card">
+    <h2>Ons</h2>
+
+    <div class="photo-album">
+      <img src="https://e7.pngegg.com/pngimages/605/231/png-clipart-dating-love-courtship-woman-couple-love-couple-love-miscellaneous-thumbnail.png" class="album-photo active" alt="Ons foto 1">
+      <img src="https://e7.pngegg.com/pngimages/85/250/png-clipart-the-happy-lovers-lessons-in-loving-a-laird-feeling-kiss-others-love-miscellaneous-thumbnail.png" class="album-photo" alt="Ons foto 2">
+      <img src="https://images.unsplash.com/photo-1653688529238-1326ab9eeab9?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGxvdmluZyUyMGNvdXBsZXxlbnwwfHwwfHx8MA%3D%3D" class="album-photo" alt="Ons foto 3">
+      <img src="https://images.unsplash.com/photo-1653688528880-9a17cff44bf5?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGxvdmluZyUyMGNvdXBsZXxlbnwwfHwwfHx8MA%3D%3D" class="album-photo" alt="Ons foto 4">
+      <img src="https://images.unsplash.com/photo-1653688529460-83ed61d654b7?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGxvdmluZyUyMGNvdXBsZXxlbnwwfHwwfHx8MA%3D%3D" class="album-photo" alt="Ons foto 5">
+      <img src="https://images.unsplash.com/photo-1653688529306-b1d4637129a7?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGxvdmluZyUyMGNvdXBsZXxlbnwwfHwwfHx8MA%3D%3D" class="album-photo" alt="Ons foto 6">
+      <img src="https://images.unsplash.com/photo-1653688529370-46625c7a548e?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bG92aW5nJTIwY291cGxlfGVufDB8fDB8fHww" class="album-photo" alt="Ons foto 7">
+      <img src="https://images.unsplash.com/photo-1653688528982-6fdcbaf65fc7?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGxvdmluZyUyMGNvdXBsZXxlbnwwfHwwfHx8MA%3D%3D" class="album-photo" alt="Ons foto 8">
+      <img src="https://images.unsplash.com/photo-1653688529544-b7b9a37eda25?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGxvdmluZyUyMGNvdXBsZXxlbnwwfHwwfHx8MA%3D%3D" class="album-photo" alt="Ons foto 9">
+      <img src="https://images.unsplash.com/photo-1653688528935-fa59c9554828?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGxvdmluZyUyMGNvdXBsZXxlbnwwfHwwfHx8MA%3D%3D" class="album-photo" alt="Ons foto 10">
+      <img src="https://images.unsplash.com/photo-1693462467023-a60e9b74c434?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fGxvdmluZyUyMGNvdXBsZXxlbnwwfHwwfHx8MA%3D%3D" class="album-photo" alt="Ons foto 11">
+      <img src="https://images.unsplash.com/photo-1693129584967-70427e3cef40?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDd8fGxvdmluZyUyMGNvdXBsZXxlbnwwfHwwfHx8MA%3D%3D" class="album-photo" alt="Ons foto 12">
+    </div>
+
+    <p>Liefde is eg — omdat dit <strong>gekies</strong> word.</p>
+  </div>
+</section>
+
+<!-- Promise -->
+<section class="screen">
+  <div class="card fade">
+  <h2>My Belofte</h2>
+  <p>Ek belowe om langs jou te loop — in vreugde en in storms. Om jou hand te hou en jou hart te eer.</p>
+  <div class="row">
+    <button class="btn ghost" id="here">Ek is hier</button>
+    <button class="btn" id="restart">Lees weer</button>
+    <a href="index.html"><button class="btn ghost">Keer terug</button></a>
+  </div>
+ </div>
+</section>
+
+<!-- Music -->
+<div class="music"><button id="play">▶︎</button><button id="pause">⏸</button><button id="mute">🔇</button></div>
+
+<script>
+
+//Photo Album
+const photos = document.querySelectorAll(".album-photo");
+const album = document.querySelector(".photo-album");
+
+let currentPhoto = 0;
+let isPaused = false;
+
+function showNextPhoto() {
+  if (isPaused) return;
+
+  photos[currentPhoto].classList.remove("active");
+  currentPhoto = (currentPhoto + 1) % photos.length;
+  photos[currentPhoto].classList.add("active");
+}
+
+// Change photo every 3.2 seconds
+const albumInterval = setInterval(showNextPhoto, 4000);
+
+// Toggle pause on tap / click
+album.addEventListener("click", () => {
+  isPaused = !isPaused;
+  album.classList.toggle("paused", isPaused);
+});
+
+// Music
+const bgm=document.getElementById('bgm'); bgm.volume=.25;
+document.getElementById('play').onclick=()=>bgm.play().catch(()=>{});
+document.getElementById('pause').onclick=()=>bgm.pause();
+document.getElementById('mute').onclick=()=>bgm.muted=!bgm.muted;
+
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.2});
+document.querySelectorAll('.fade').forEach(f=>io.observe(f));
+
+const float=document.getElementById('float');
+function spawn(){const h=document.createElement('div');h.className='heart';h.textContent='❤';h.style.left=Math.random()*100+'%';h.style.animationDuration=(7+Math.random()*6)+'s';float.appendChild(h);setTimeout(()=>h.remove(),14000);}
+setInterval(spawn,1500);
+
+const petalsContainer=document.getElementById('petals');
+function bloom(){for(let i=0;i<30;i++){const p=document.createElement('div');p.className='petal';p.style.left=Math.random()*100+'%';p.style.bottom='-20px';p.style.animationDelay=(Math.random()*1.2)+'s';petalsContainer.appendChild(p);setTimeout(()=>p.remove(),4000);}}
+
+const openBtn=document.getElementById('openBtn');
+const glow=document.getElementById('glow');
+openBtn.onclick=()=>{ bgm.play().catch(()=>{}); glow.classList.add('on'); bloom(); window.scrollTo({top:innerHeight,behavior:'smooth'}); };
+
+const here=document.getElementById('here');
+here.onclick=()=>{
+  const m=document.createElement('div');
+  m.textContent='Ek is baie lief vir jou!';
+  Object.assign(m.style,{position:'fixed',left:'50%',bottom:'120px',transform:'translateX(-50%)',background:'linear-gradient(135deg,var(--red),var(--gold))',color:'#3b0a12',padding:'12px 18px',borderRadius:'999px',boxShadow:'var(--shadow)',opacity:'0'});
+  document.body.appendChild(m);
+  requestAnimationFrame(()=>{m.style.transition='1.6s';m.style.opacity='1'});
+  setTimeout(()=>{m.style.opacity='0';setTimeout(()=>m.remove(),800)},1600);
+};
+
+const restart=document.getElementById('restart');
+restart.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+
+</script>
+
+</body>
+</html>
